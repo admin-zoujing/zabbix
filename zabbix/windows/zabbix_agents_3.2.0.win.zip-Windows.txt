@@ -1,0 +1,62 @@
+Zabbix是一个CS结构的监控系统，支持ping，snmp等很多的监控，但是大部分的监控任务需要客户端agentd的支持才能用。server端侦听在10051端口，客户端侦听在10050端口。
+
+一些相关教程集合：
+
+
+ 1.安装介质
+ ZABBIX客户端
+ http://www.zabbix.com/downloads/3.2.0/zabbix_agents_3.2.0.win.zip
+ 
+ 
+2.安装过程
+ 1) 将zabbix文件夹解压后放在C：\
+ 2) C:\zabbix\下 新建一个zabbix_agent.log文件
+ 3) 配置zabbix_agentd.win.conf文件（位于C:\zabbix\conf\），需要修改的地方分别为：
+ Logfile= C:\zabbix\zabbix_agent.log
+        Server=X.X.X.X
+        Hostname=X.X.X.X
+ 注：
+ l Server是zabbix服务器的IP地址
+ l LogFile为zabbix_agentd.log文件的位置，用于记录事件，这里的zabbix_agentd.log填写你新建log文件的位置
+ l Hostname需要和服务器端配置主机填入的主机名称一致，不然日志中将会报“host{主机名}not found”的错误
+ 
+4) 打开CMD命令行，注意文件路径执行：
+ C:\zabbix\bin\win32\zabbix_agentd.exe -c C:\zabbix\conf\zabbix_agentd.win.conf -i
+ C:\zabbix\bin\win32\zabbix_agentd.exe -c C:\zabbix\conf\zabbix_agentd.win.conf -s
+
+5) 在"运行"输入 "services.msc"，在里面找到"ZABBIX AGENT"，并启动服务。 到windows的系统服务列表里面查看ZabbixAgent的状态，正常情况下会看到ZabbixAgent已经存在在系统服务里，而且是自动启动，安装Agent并注册服务,见图1。
+ 
+
+6) 配置命令
+ l C:\zabbix\bin\win32\zabbix_agentd -c C:\zabbix\conf\zabbix_agentd.win.conf -i
+ -c ：指定配置文件所有位置
+ -i ：安装客户端
+ -s ：启动客户端
+ -x ：停止客户端
+ -d ：卸载客户端
+ 
+7)确认zabbix/conf/zabbix_agentd.win.conf文件关于网卡参数设定
+ 在客户端获取网卡参数列表:
+ typeperf -qx | find "Network Interface" | find "Bytes"
+ 确认以下内容：
+ ### Option:Network
+ PerfCounter=NetIn,"\NetworkInterface(Red Hat VirtIO Ethernet Adapter)\Bytes Received/sec",15
+ PerfCounter=NetOut,"\Network Interface(Red Hat VirtIO Ethernet Adapter)\Bytes Sent/sec",15
+ PerfCounter=NetTotal,"\Network Interface(Red Hat VirtIO Ethernet Adapter)\Bytes Total/sec",15
+ 其中""部分取自于上图中的网卡参数，NetIn，NetOut和NetTotal是在Zabbix中配置时的Key。
+ 最后的15是指取值时间，单位为“秒”
+ 
+8)运行安装和启动命令
+ 64位
+ C:\zabbix\bin\win64\zabbix_agentd.exe -c C:\zabbix\conf\zabbix_agentd.win.conf -i
+ C:\zabbix\bin\win64\zabbix_agentd.exe -c C:\zabbix\conf\zabbix_agentd.win.conf -s
+ 32位
+ C:\zabbix\bin\win32\zabbix_agentd.exe -c C:\zabbix\conf\zabbix_agentd.win.conf -i
+ C:\zabbix\bin\win32\zabbix_agentd.exe -c C:\zabbix\conf\zabbix_agentd.win.conf -s
+ 帮助
+ C:\zabbix\bin\win32\zabbix_agentd.exe -c C:\zabbix\conf\zabbix_agentd.win.conf -h
+ 
+
+4.其他问题及解决
+ 1) 防火墙限制，配置不成功
+ 如果本机有防火墙的话，请关闭，否则可能配置不成功,或者把zabbix所用到的端口打开。开放防火墙端口10050

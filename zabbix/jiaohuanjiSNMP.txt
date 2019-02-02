@@ -1,0 +1,799 @@
+
+1      交换机部分
+1.1   Cisco交换机
+
+使用以下配置命令前，均需要执行以下步骤：
+
+1．  登陆交换机。（可以使用串口线直接连接，如果交换机配置有管理IP并且允许telnet登陆，则也可以通过telnet进行登陆。）
+
+2．  输入enable命令进入特权模式。
+
+3．  输入config terminal进行配置模式。
+
+使用完配置命令后，均需要执行以下步骤进行保存：
+
+1．  输入end命令退出配置模式。
+
+2． copy running start保存配置文件。
+1.1.1  SNMP配置
+
+1．配置snmp 只读community
+
+snmp-server community public ro
+
+配置交换机的只读community为public
+
+2．配置snmp 读写community
+
+snmp-server community public rw
+
+配置交换机的读写community为public
+1.1.2  TRAP配置
+
+1．配置交换机允许发送trap
+
+snmp-server enable traps
+
+2．配置交换机接收trap的主机
+
+snmp-server host 10.238.18.17 traps public
+
+指定交换机SNMP Trap的接收者为10.238.18.17，发送Trap时采用public作为字串
+1.1.3  Syslog配置
+
+1．打开交换机的syslog功能
+
+logging on
+
+2. 直接配置相应的syslog发送到的接收主机，10.90.200.93为该主机的ip地址。
+
+logging 10.90.200.93
+
+3．配置发送syslog的主机格式类型。
+
+logging facility local4 
+
+4．  选择发送warning以上级别的log信息。
+
+logging trap warnings
+1.2 华为交换机
+
+使用以下配置命令前，均需要执行以下步骤：
+
+1．  登陆交换机。（可以使用串口线直接连接，如果交换机配置有管理IP并且允许telnet登陆，则也可以通过telnet进行登陆。）
+
+2．  输入system命令进入配置模式。
+
+使用完配置命令后，均需要执行以下步骤进行保存：
+
+1．  输入return命令退出配置模式。
+
+2． Save保存配置文件。
+1.2.1  SNMP配置
+
+1．  启用SNMP
+
+snmp-agent
+
+2．  配置snmp协议的版本号
+
+snmp-agent sys-info version all
+
+上面的命令是指对SNMP V1、V 2C、 V3都支持。
+
+3．  配置snmp只读community
+
+snmp-agent community read public
+
+配置交换机的只读community为public
+
+4．  配置snmp读写community
+
+snmp-agent community write public
+
+配置交换机的读写community为public
+1.2.2  TRAP配置
+
+1．配置交换机允许发送trap
+
+snmp-agent traps enable
+
+2．配置交换机接收trap的主机
+
+snmp-agent target-host trap address udp-domain 10.199.39.215 params securityname public
+
+指定交换机SNMP Trap的接收者为10.199.39.215（一般配置为采集机的IP），发送Trap时采用public作为字串
+
+ 
+1.2.3  Syslog配置
+
+1．启用交换机的syslog功能
+
+info-center enable
+
+2. 指定接收syslog的主机，10.90.200.93为该主机的ip地址。
+
+info-center loghost 10.90.200.93 language English
+
+以上命令是配置10.90.200.93接收syslog，syslog的语言为英文。
+
+3．  选择发送warning以上级别的syslog信息。
+
+info-center source default channel loghost log level warning
+1.3   中兴交换机
+
+使用以下配置命令前，均需要执行以下步骤：
+
+1.登陆交换机。（可以使用串口线直接连接，如果交换机配置有管理IP并且允许telnet登陆，则也可以通过telnet进行登陆。）
+
+2.输入enable命令进入特权模式。
+
+3.输入config terminal进行配置模式。
+
+使用完配置命令后，均需要执行以下步骤进行保存：
+
+1.输入end命令退出配置模式。
+
+2.write保存配置文件。
+1.3.1  SNMP配置
+
+1．  配置snmp 的只读community
+
+snmp-server community public view test ro
+
+snmp-server view DefaultView system included
+
+snmp-server view AllView internet included
+
+snmp-server view test zxr10IPAddrTable included
+
+snmp-server view test zte included
+
+snmp-server view test mib-2 included
+1.3.2  TRAP配置
+
+1.配置交换机允许发送trap
+
+snmp-server enable trap
+
+2．配置交换机接收trap的主机
+
+snmp-server host 192.168.2.74 trap version 2c public
+
+指定交换机SNMP Trap的接收者为192.168.2.74，发送Trap时采用public作为字串
+1.3.3  Syslog配置
+
+1．打开交换机的syslog功能
+
+syslog on
+
+2. 直接配置相应的syslog发送到的接收主机，192.168.2.74为该主机的ip地址。
+
+syslog server 192.168.2.74
+
+3.选择发送warning以上级别的log信息。
+
+syslog level warnings
+
+ 
+2      路由器部分
+
+在HP-UX 11i操作系统上，一般情况下，配置SNMP服务时，将需要修改SNMP团体名，不建议使用操作系统缺省的SNMP团体名。
+2.1   Cisco路由器
+
+使用以下配置命令前，均需要执行以下步骤：
+
+1．  登陆路由器。（可以使用串口线直接连接，如果交换机配置有管理IP并且允许telnet登陆，则也可以通过telnet进行登陆。）
+
+2．  输入enable命令进入特权模式。
+
+3．  输入config terminal进行配置模式。
+
+使用完配置命令后，均需要执行以下步骤进行保存：
+
+1．  输入end命令退出配置模式。
+
+2． copy running start保存配置文件。
+2.1.1  SNMP配置
+
+1．配置snmp 只读community
+
+snmp-server community public ro
+
+配置路由器的只读community为public
+
+2．配置snmp 读写community
+
+snmp-server community public rw
+
+配置路由器的读写community为public
+2.1.2  TRAP配置
+
+1．配置路由器允许发送trap
+
+snmp-server enable traps
+
+2．配置路由器接收trap的主机
+
+snmp-server host 10.238.18.17 traps public
+
+指定路由器SNMP Trap的接收者为10.238.18.17，发送Trap时采用public作为字串
+2.1.3  Syslog配置
+
+1．打开路由器的syslog功能
+
+logging on
+
+2. 直接配置相应的syslog发送到的接收主机，10.90.200.93为该主机的ip地址。
+
+logging 10.90.200.93
+
+3．配置发送syslog的主机格式类型。
+
+logging facility local4 
+
+4．  选择发送warning以上级别的log信息。
+
+logging trap warnings
+2.2   华为路由器
+
+使用以下配置命令前，均需要执行以下步骤：
+
+1．  登陆路由器。（可以使用串口线直接连接，如果交换机配置有管理IP并且允许telnet登陆，则也可以通过telnet进行登陆。）
+
+2．  输入system命令进入配置模式。
+
+使用完配置命令后，均需要执行以下步骤进行保存：
+
+1．  输入return命令退出配置模式。
+
+2． Save保存配置文件。
+2.2.1  SNMP配置
+
+1．  启用SNMP
+
+snmp-agent
+
+2．  配置snmp协议的版本号
+
+snmp-agent sys-info version all
+
+上面的命令是指对SNMP V1、V2C、 V3都支持。
+
+3．  配置snmp只读community
+
+snmp-agent community read public
+
+配置路由器的只读community为public
+
+4．  配置snmp读写community
+
+snmp-agent community write public
+
+配置路由器的读写community为public
+2.2.2  TRAP配置
+
+1．配置路由器允许发送trap
+
+snmp-agent traps enable
+
+2．配置路由器接收trap的主机
+
+snmp-agent target-host trap address udp-domain 10.199.39.215 params securityname public
+
+指定路由器SNMP Trap的接收者为10.199.39.215（一般配置为采集机的IP），发送Trap时采用public作为字串
+2.2.3  Syslog配置
+
+1．启用路由器的syslog功能
+
+info-center enable
+
+2. 指定接收syslog的主机，10.90.200.93为该主机的ip地址。
+
+info-center loghost 10.90.200.93 language English
+
+以上命令是配置10.90.200.93接收syslog，syslog的语言为英文。
+
+3．  选择发送warning以上级别的syslog信息。
+
+info-center source default channel loghost log level warning
+3      防火墙部分
+3.1   Netscreen防火墙
+
+由于Netscreen防火墙的配置界面是以web方式进行的，故下面均以截图作为讲解基础，另外netscreen防火墙的单项配置如果一选择“APPLY“，则配置自动保存并且运行！
+3.1.1  SNMP配置
+
+选择Configuration—Report Settings—SNMP
+
+点击“New Community”按钮，配置SNMP的只读community及接收主机。
+3.1.2  TRAP配置
+
+ 
+
+点击“Edit“，在Permissions选中”trap”
+
+ 
+
+ 
+3.1.3  Syslog配置
+
+ 
+
+选中SYSLOG，选中“Enable syslog messages”，输入接收主机的IP地址，选中“Event Log”复选框，选中前面的“enable”复选框，最后点击“Apply”按钮。
+3.2   Cisco PIX防火墙
+
+使用以下配置命令前，均需要执行以下步骤：
+
+1．  登陆防火墙。（可以使用串口线直接连接，如果交换机配置有管理IP并且允许telnet登陆，则也可以通过telnet进行登陆。）
+
+2．  输入enable命令进入特权模式。
+
+3．  输入config terminal进行配置模式。
+
+使用完配置命令后，均需要执行以下步骤进行保存：
+
+3．  输入end命令退出配置模式。
+
+4． copy running start保存配置文件。
+
+ 
+3.2.1  SNMP配置
+
+1．配置snmp 只读community
+
+snmp-server community public ro
+
+配置防火墙的只读community为public
+
+注：PIX防火墙只支持只读community，不支持读写community。
+
+2．配置轮询SNMP的主机
+
+snmp-server host <if_name> 10.199.39.111 poll
+
+注：以上为PIX OS 6。0以上版本命令。
+
+snmp-server host 10.199.39.111
+
+注：以上为PIX OS 6.0以下版本命令。
+3.2.2  TRAP配置
+
+1．配置路由器允许发送trap
+
+snmp-server enable traps
+
+2．配置交换机接收trap的主机
+
+snmp-server host 10.238.18.17 traps
+
+指定交换机SNMP Trap的接收者为10.238.18.17，发送Trap时采用public作为字串
+3.2.3  Syslog配置
+
+1．打开交换机的syslog功能
+
+logging on
+
+2. 直接配置相应的syslog发送到的接收主机，10.90.200.93为该主机的ip地址。
+
+logging host [interface-_name] 10.90.200.93
+
+3．  选择发送warning以上级别的log信息。
+
+logging trap severity_level 5
+4      服务器部分
+4.1   LINUX服务器
+4.1.1  准备工作
+
+linux安装系统盘或下载的软件包net-snmp-5.4.3.tar.gz
+4.1.2  安装方法
+
+安装SNMP相关软件包：
+
+net-snmp-5.4.3.tar.gz
+
+安装SNMP软件：
+
+# tar -zxvf /winshare/ net-snmp-5.4.3.tar.gz
+
+# cd ./ net-snmp-5.4.3
+
+#./configure –prefix=/usr/local/snmp //配置 指定安装目录
+
+安装过程中，询问信息可直接回车，默认即可。
+
+# make
+
+# make install
+4.1.3  配置SNMP文件
+
+安装完成后，执行：
+
+# /usr/local/bin/snmpconf
+
+I can create the following types of configuration files for you.
+
+Select the file type you wish to create:
+
+(you can create more than one as you run this program)
+
+   1:  snmpd.conf
+
+   2:  snmptrapd.conf
+
+   3:  snmp.conf
+
+Other options: quit
+
+Select File: 1
+
+在出现菜单中，选择1
+
+The configuration information which can be put into snmpd.conf is divided
+
+into sections.  Select a configuration section for snmpd.conf
+
+that you wish to create:
+
+   1:  Monitor Various Aspects of the Running Host
+
+   2:  Agent Operating Mode
+
+   3:  Extending the Agent
+
+   4:  Access Control Setup
+
+   5:  Trap Destinations
+
+   6:  System Information Setup
+
+Other options: finished
+
+Select section: 4
+
+在出现菜单中，选择4
+
+Section: Access Control Setup
+
+Description:
+
+  This section defines who is allowed to talk to your running
+
+  snmp agent.
+
+Select from:
+
+   1:  a SNMPv3 read-write user
+
+   2:  a SNMPv3 read-only user
+
+   3:  a SNMPv1/SNMPv2c read-only access community name
+
+   4:  a SNMPv1/SNMPv2c read-write access community name
+
+Other options: finished, list
+
+Select section: 3
+
+在出现菜单中，选择3，配置v1和v2c版本的只读community字。
+
+Configuring: rocommunity
+
+Description:
+
+  a SNMPv1/SNMPv2c read-only access community name
+
+    arguments:  community [default|hostname|network/bits] [oid]
+
+The community name to add read-only access for: public
+
+提示输入只读community字，这里输入public。
+
+The hostname or network address to accept this community name from [RETURN for all]:
+
+提示通过此community字访问设备的网段及主机地址，这里可以直接输入回车确认，表示全部。
+
+The OID that this community should be restricted to [RETURN for no-restriction]:
+
+提示可以访问的OID范围，这里直接回车确认，表示全部OID。
+
+Finished Output: community  public
+
+配置后返回菜单，输入finished，退到上一级菜单，在顶级菜单输入quit，提示配置文件建立成功：
+
+I can create the following types of configuration files for you.
+
+Select the file type you wish to create:
+
+(you can create more than one as you run this program)
+
+   1:  snmpd.conf
+
+   2:  snmptrapd.conf
+
+   3:  snmp.conf
+
+Other options: quit
+
+Select File: quit
+
+The following files were created:
+
+  snmpd.conf 
+4.1.4  启动SNMP服务
+
+# /usr/local/sbin/snmpd -c /usr/bin/snmpd.conf
+4.1.5  验证SNMP服务
+
+# ps –ef|grep snmp
+
+root      6827     1  0 02:38 ?        00:00:00 /usr/local/sbin/snmpd -c /usr/bin/snmpd.conf
+
+root      6829 21311 76 02:38 pts/2    00:00:00 grep snmp
+
+客户端可以使用SolarWinds Engineers Edition，检测liunx系统的各项参数。
+4.2   IBM服务器（AIX系统）
+4.2.1  准备工作
+
+AIX安装系统盘 或下载的软件包net-snmp-5.4.1.tar.gz
+4.2.2  安装方法
+
+安装SNMP相关软件包
+
+gcc-3.3.2-5.aix5.3.ppc.rpm
+
+openssl-0.9.7-1.src.rpm
+
+net-snmp-5.4.1.tar.gz
+
+安装GCC编译环境：
+
+# rpm -U gcc-3.3.2-5.aix5.3.ppc.rpm
+
+gcc will be installed by default
+
+安装SNMP软件：
+
+Type the following: (using the sample above)
+
+# cd /opt
+
+# uncompress *.Z
+
+# cp net-snmp-5.4.1.tar.gz /
+
+# tar -zxvf net-snmp-5.4.1.tar.gz
+
+#./configure –prefix=/usr/local/snmp //配置 指定安装目录
+
+安装过程中，询问信息可直接回车，默认即可。
+
+# make
+
+# make install
+4.2.3  配置SNMP文件
+
+命令如下:
+
+cd /usr/local/bin
+
+./snmpconf
+
+根据“7.1.3配置SNMP文件”步骤，进行相关项配置即可。
+4.2.4  启动SNMP服务
+
+# lssrc -s snmpd //查看
+
+# startsrc -s snmpd //启动
+4.2.5  验证SNMP服务
+
+# ps –ef|grep snmp
+
+会看到类似这样的信息：
+
+root  5996  4176   0 22:31:35      -  0:00 /usr/sbin/snmpd
+
+root  7250  4176   0 22:31:41      -  0:0 /usr/sbin/snmpmibd
+
+客户端可以使用SolarWinds Engineers Edition，检测liunx系统的各项参数。
+4.3   HP服务器（HP-UX系统）
+4.3.1  准备工作
+
+HP-UX11i安装系统盘
+
+涉及的相关文件有
+
+/usr/sbin/snmpd
+
+/usr/sbin/snmpdm
+
+/usr/sbin/mib2agt
+
+/usr/sbin/hp_unixagt
+
+/usr/sbin/trapdestagt
+
+/etc/SnmpAgent.d/snmpd.conf
+
+/var/adm/snmpd.log
+
+/opt/OV/snmp_mibs/
+
+/sbin/SnmpAgtStart.d/
+4.3.2  安装方法
+
+安装SNMP相关软件包
+
+OVSNMPAgent
+
+安装命令是
+
+#swinstall –s OVSNMPAgent
+
+验证已安装了软件包
+
+#swlist -l product|grep -i SUNWsadmi
+4.3.3  配置SNMP文件
+
+命令如下:
+
+#cd /etc/SnmpAgent.d
+
+#cp snmpd.conf snmpd.conf.ori
+
+#vi snmpd.conf
+
+get-community-name:   public    //可以把public修改其他字符串,例如metarnet,注意用snmp前端工具登陆是也要制定community 为metarnet.若只为测试可不用修改
+
+trap-dest:            localhost//接受snmp告警信息的主机,如123.45.67.89也采用默认值.
+4.3.4  启动SNMP服务
+
+# /usr/sbin/snmpd
+4.3.5  验证SNMP服务
+
+#ps –ef|grep snmp
+
+会看到类似这样的信息..
+
+root  9468     1  0 14:27:34 ?         0:00 /usr/sbin/snmpdm 
+
+客户端可以使用SolarWinds Engineers Edition，检测liunx系统的各项参数。
+4.4   SUN服务器（Solaris系统）
+4.4.1  准备工作
+
+Solaris安装系统盘或下载的软件包net-snmp-5.4.3.tar.gz及其它版本
+4.4.2  安装方法
+
+安装SNMP相关软件包：
+
+gcc-3.4.6-sol10-x86-local.gz
+
+libiconv-1.13.1-sol10-x86-local.gz
+
+libintl-3.4.0-sol10-x86-local.gz
+
+make-3.82-sol10-x86-local.gz
+
+net-snmp-5.4.3.tar.gz
+
+安装GCC等编译工具：
+
+# gzip -d /tmp/gcc-3.4.6-sol10-x86-local.gz
+
+# pkgadd -d gcc-3.4.6-sol10-x86-local
+
+安装SNMP软件：
+
+# gzip -d /tmp/net-snmp-5.4.3.tar.gz
+
+# tar -xvf /tmp/ net-snmp-5.4.3.tar.gz
+
+# cd ./ net-snmp-5.4.3
+
+#./configure –prefix=/usr/snmp //配置 指定安装目录
+
+安装过程中，询问信息可直接回车，默认即可。
+
+# make
+
+# make install
+4.4.3  配置SNMP文件
+
+命令如下:
+
+# cd /usr/sfw/bin
+
+# ./snmpconf
+
+根据“7.1.3配置SNMP文件”步骤，进行相关项配置即可。
+
+Solaris 10自带net-snmp配置方法：
+
+# vi /etc/sma/snmp/snmpd.conf
+
+rocommunity  public
+
+修改只读Community为public,保存退出。
+4.4.4  启动SNMP服务
+
+# /usr/sfw/sbin/snmpd
+4.4.5  验证SNMP服务
+
+#ps –ef|grep snmp
+
+会看到类似这样的信息..
+
+bash-3.00# ps -ef |grep snmp
+
+    root 14363  1322   0 01:29:24 pts/3       0:00 grep snmp
+
+    root 14361     1   1 01:29:18 ?           0:00 /usr/sfw/sbin/snmpd
+
+客户端可以使用SolarWinds Engineers Edition，检测liunx系统的各项参数。
+4.5   Windows服务器（WIN2003系统）
+4.5.1  准备工作
+
+Windows系统安装盘
+4.5.2  安装方法
+
+（1）修改windows SNMP协议栈端口号
+
+修改%windir% \system32\drivers\etc（一般为：C:\WINDOWS\system32\drivers\etc）目录下services文件。修改如下内容（将snmp端口修改为1611，snmptrap修改为1612）：
+
+snmp             161/udp                           #SNMP
+
+snmptrap          162/udp    snmp-trap              #SNMP trap
+
+注意事项：在修改前，要确认操作系统未占有1611端口。
+
+（2）安装windows SNMP服务
+
+通过控制面板启动“添加或删除程序”，并选择“添加/删除windows组件”：
+
+ 
+
+选中“管理和监视工具”，单击“详细信息…”按钮：
+
+ 
+
+单击选择“简单网络管理协议”，并单击“确定”按钮：
+
+ 
+
+回到“windows 组件向导”页面，单击“下一步”按钮，等待windows组件安装完成：
+
+ 
+4.5.3  配置SNMP服务
+
+    通过开始菜单中的“运行”，输入services.msc启动“服务”窗口，对windows SNMP服务进行配置，在窗口中查找“SNMP Service”服务，并通过右键查看该服务属性：
+
+ 
+
+配置SNMP服务的安全选项，要配置如下两个内容：
+
+1）添加“接受团体名称”
+
+2）选择“接受来自任何主机的SNMP数据包”，或者添加监控主机的IP地址
+
+ 
+
+ 
+4.5.4  启动SNMP服务
+
+通过开始菜单中的“运行”，输入services.msc启动“服务”窗口，找到“SNMP Service”服务，通过右键点击“启动”，以启动服务。
+
+ 
+5      其他部分
+5.1   F5负载均衡
+
+由于F5负载均衡设备的配置界面是以web方式进行的，故下面均以截图作为讲解基础，另外F5负载均衡设备的单项配置如果选择“APPLY“，则配置自动保存并且运行！
+5.1.1  SNMP配置
+
+选择System Admin—Snmp Administration
+
+ 
+
+点击“Enable”按钮以允许SNMP，在Client Access中配置采集机的IP地址，在System Information的“Community String”中输入只读community，System Contact和Machine location为可选项。点击“apply”提交。
+5.1.2  TRAP配置
+
+在Trap Configuration中配置接收TRAP信息的采集机的IP地址及端口号和community。一般端口号为162。
+
