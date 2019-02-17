@@ -22,7 +22,6 @@ EOF
 mkdir -pv /etc/zabbix/externalscripts
 cat  > /etc/zabbix/externalscripts/ngx_status.sh <<EOF
 #!/bin/bash
-# AUTHOR：
 # Description：zabbix 监控 nginx 性能以及进程状态
 # Note：此脚本需要配置在被监控端，否则 ping 检测将会得到不符合预期的结果
 
