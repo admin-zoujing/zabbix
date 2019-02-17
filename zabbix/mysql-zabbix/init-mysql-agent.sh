@@ -1,8 +1,6 @@
 #!/bin/bash
 #http://mirrors.aliyun.com/zabbix/zabbix/3.4/
-# AUTHOR：
 # Description：zabbix 监控 mysql 性能
-# Note：此脚本需要配置在被监控端
 
 #1、安装zabbix-agent
 cd /usr/local/src/lnmp/zabbix/mysql-zabbix
