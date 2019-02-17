@@ -23,11 +23,8 @@ yum install -y python34
 cat > /etc/zabbix/externalscripts/elasticsearch.py <<EOF
 #!/usr/bin/env python3
 ##################################################
-# AUTHOR: Neo <netkiller@msn.com>
-# WEBSITE: http://www.netkiller.cn
 # Description：zabbix 通过 status 模块监控 elasticsearch
-# Note：Zabbix 3.2
-# DateTime: 2016-11-22
+# Note：Zabbix 3.4
 ##################################################
 try:
 	import time, json
