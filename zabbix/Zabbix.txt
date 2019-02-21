@@ -631,3 +631,49 @@ Include=/usr/local/zabbix/etc/zabbix_agentd.conf.d/
 # Mandatory: no
 # Default:
 # UserParameter=
+
+一、Centos安装mailx
+1、QQ邮箱设置，开启POP3、SMTP、IMAP服务。
+2、yum -y install  mailx   php
+echo '
+set from=489548322@qq.com
+
+set smtp=smtp.qq.com
+
+set smtp-auth-user=489548322@qq.com
+
+set smtp-auth-password=apvlwaqlntlobjbh
+' >> /etc/mail.rc 
+
+telnet smtp.qq.com 25
+3、echo "test mail content"|mail -s "Mail title" 489548322@qq.com
+echo '#!/bin/bash
+echo "$3" | mail -s "$2" "$1"
+' > /usr/local/zabbix/etc/zabbix_server.conf.d/mail.sh
+chown zabbix:zabbix /usr/local/zabbix/etc/zabbix_server.conf.d/mail.sh
+chmod +x /usr/local/zabbix/etc/zabbix_server.conf.d/mail.sh
+sed -i 's|# AlertScriptsPath=${datadir}/zabbix/alertscripts|AlertScriptsPath=/usr/local/zabbix/etc/zabbix_server.conf.d|' /usr/local/zabbix/etc/zabbix_server.conf
+
+
+二、Centos安装sendEmail
+wget http://caspian.dotconf.net/menu/Software/SendEmail/sendEmail-v1.56.tar.gz
+tar -zxvf sendEmail-v1.56.tar.gz
+cd sendEmail-v1.56
+cp sendEmail /usr/local/bin/  
+/usr/local/bin/sendEmail -f "489548322@qq.com" -t "489548322@qq.com" -s "smtp.qq.com" -u "myTest" -o message-content-type=html -o message-charset=utf-8 -xu "489548322@qq.com" -xp "apvlwaqlntlobjbh" -m "hello,this is the test contents"
+
+echo '#!/bin/bash
+#export LANG=zh_CN.UTF-8
+to=$1
+subject=$2
+iconv -f UTF-8 -t GB2312 $subject > $subject    #解决foxmail收邮件的时候中文标题乱码
+body=$3
+from=489548322@qq.com
+smtp=smtp.qq.com
+
+passwd=xxxxxxxxx
+/usr/local/bin/sendEmail  -f "$from" -t "$to" -s "$smtp" -u "$subject" -o message-content-type=html -o message-charset=utf-8 -xu "$from"  -xp "$passwd" -m "$body"
+' > /usr/local/zabbix/etc/zabbix_server.conf.d/sendEmail.sh
+chown zabbix:zabbix /usr/local/zabbix/etc/zabbix_server.conf.d/sendEmail.sh
+chmod +x /usr/local/zabbix/etc/zabbix_server.conf.d/sendEmail.sh
+sed -i 's|# AlertScriptsPath=${datadir}/zabbix/alertscripts|AlertScriptsPath=/usr/local/zabbix/etc/zabbix_server.conf.d|' /usr/local/zabbix/etc/zabbix_server.conf
