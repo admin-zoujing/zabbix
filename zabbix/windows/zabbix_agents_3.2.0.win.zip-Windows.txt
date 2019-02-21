@@ -1,62 +1,58 @@
-ZabbixÊÇÒ»¸öCS½á¹¹µÄ¼à¿ØÏµÍ³£¬Ö§³Öping£¬snmpµÈºÜ¶àµÄ¼à¿Ø£¬µ«ÊÇ´ó²¿·ÖµÄ¼à¿ØÈÎÎñĞèÒª¿Í»§¶ËagentdµÄÖ§³Ö²ÅÄÜÓÃ¡£server¶ËÕìÌıÔÚ10051¶Ë¿Ú£¬¿Í»§¶ËÕìÌıÔÚ10050¶Ë¿Ú¡£
+Zabbixæ˜¯ä¸€ä¸ªCSç»“æ„çš„ç›‘æ§ç³»ç»Ÿï¼Œæ”¯æŒpingï¼Œsnmpç­‰å¾ˆå¤šçš„ç›‘æ§ï¼Œä½†æ˜¯å¤§éƒ¨åˆ†çš„ç›‘æ§ä»»åŠ¡éœ€è¦å®¢æˆ·ç«¯agentdçš„æ”¯æŒæ‰èƒ½ç”¨ã€‚serverç«¯ä¾¦å¬åœ¨10051ç«¯å£ï¼Œå®¢æˆ·ç«¯ä¾¦å¬åœ¨10050ç«¯å£ã€‚
 
-Ò»Ğ©Ïà¹Ø½Ì³Ì¼¯ºÏ£º
+ä¸€äº›ç›¸å…³æ•™ç¨‹é›†åˆï¼š
 
-
- 1.°²×°½éÖÊ
- ZABBIX¿Í»§¶Ë
+ 1.å®‰è£…ä»‹è´¨
+ ZABBIXå®¢æˆ·ç«¯
  http://www.zabbix.com/downloads/3.2.0/zabbix_agents_3.2.0.win.zip
  
- 
-2.°²×°¹ı³Ì
- 1) ½«zabbixÎÄ¼ş¼Ğ½âÑ¹ºó·ÅÔÚC£º\
- 2) C:\zabbix\ÏÂ ĞÂ½¨Ò»¸özabbix_agent.logÎÄ¼ş
- 3) ÅäÖÃzabbix_agentd.win.confÎÄ¼ş£¨Î»ÓÚC:\zabbix\conf\£©£¬ĞèÒªĞŞ¸ÄµÄµØ·½·Ö±ğÎª£º
+2.å®‰è£…è¿‡ç¨‹
+ 1) å°†zabbixæ–‡ä»¶å¤¹è§£å‹åæ”¾åœ¨Cï¼š\
+ 2) C:\zabbix\ä¸‹ æ–°å»ºä¸€ä¸ªzabbix_agent.logæ–‡ä»¶
+ 3) é…ç½®zabbix_agentd.win.confæ–‡ä»¶ï¼ˆä½äºC:\zabbix\conf\ï¼‰ï¼Œéœ€è¦ä¿®æ”¹çš„åœ°æ–¹åˆ†åˆ«ä¸ºï¼š
  Logfile= C:\zabbix\zabbix_agent.log
         Server=X.X.X.X
         Hostname=X.X.X.X
- ×¢£º
- l ServerÊÇzabbix·şÎñÆ÷µÄIPµØÖ·
- l LogFileÎªzabbix_agentd.logÎÄ¼şµÄÎ»ÖÃ£¬ÓÃÓÚ¼ÇÂ¼ÊÂ¼ş£¬ÕâÀïµÄzabbix_agentd.logÌîĞ´ÄãĞÂ½¨logÎÄ¼şµÄÎ»ÖÃ
- l HostnameĞèÒªºÍ·şÎñÆ÷¶ËÅäÖÃÖ÷»úÌîÈëµÄÖ÷»úÃû³ÆÒ»ÖÂ£¬²»È»ÈÕÖ¾ÖĞ½«»á±¨¡°host{Ö÷»úÃû}not found¡±µÄ´íÎó
+ æ³¨ï¼š
+ l Serveræ˜¯zabbixæœåŠ¡å™¨çš„IPåœ°å€
+ l LogFileä¸ºzabbix_agentd.logæ–‡ä»¶çš„ä½ç½®ï¼Œç”¨äºè®°å½•äº‹ä»¶ï¼Œè¿™é‡Œçš„zabbix_agentd.logå¡«å†™ä½ æ–°å»ºlogæ–‡ä»¶çš„ä½ç½®
+ l Hostnameéœ€è¦å’ŒæœåŠ¡å™¨ç«¯é…ç½®ä¸»æœºå¡«å…¥çš„ä¸»æœºåç§°ä¸€è‡´ï¼Œä¸ç„¶æ—¥å¿—ä¸­å°†ä¼šæŠ¥â€œhost{ä¸»æœºå}not foundâ€çš„é”™è¯¯
  
-4) ´ò¿ªCMDÃüÁîĞĞ£¬×¢ÒâÎÄ¼şÂ·¾¶Ö´ĞĞ£º
+4) æ‰“å¼€CMDå‘½ä»¤è¡Œï¼Œæ³¨æ„æ–‡ä»¶è·¯å¾„æ‰§è¡Œï¼š
  C:\zabbix\bin\win32\zabbix_agentd.exe -c C:\zabbix\conf\zabbix_agentd.win.conf -i
  C:\zabbix\bin\win32\zabbix_agentd.exe -c C:\zabbix\conf\zabbix_agentd.win.conf -s
 
-5) ÔÚ"ÔËĞĞ"ÊäÈë "services.msc"£¬ÔÚÀïÃæÕÒµ½"ZABBIX AGENT"£¬²¢Æô¶¯·şÎñ¡£ µ½windowsµÄÏµÍ³·şÎñÁĞ±íÀïÃæ²é¿´ZabbixAgentµÄ×´Ì¬£¬Õı³£Çé¿öÏÂ»á¿´µ½ZabbixAgentÒÑ¾­´æÔÚÔÚÏµÍ³·şÎñÀï£¬¶øÇÒÊÇ×Ô¶¯Æô¶¯£¬°²×°Agent²¢×¢²á·şÎñ,¼ûÍ¼1¡£
+5) åœ¨"è¿è¡Œ"è¾“å…¥ "services.msc"ï¼Œåœ¨é‡Œé¢æ‰¾åˆ°"ZABBIX AGENT"ï¼Œå¹¶å¯åŠ¨æœåŠ¡ã€‚ åˆ°windowsçš„ç³»ç»ŸæœåŠ¡åˆ—è¡¨é‡Œé¢æŸ¥çœ‹ZabbixAgentçš„çŠ¶æ€ï¼Œæ­£å¸¸æƒ…å†µä¸‹ä¼šçœ‹åˆ°ZabbixAgentå·²ç»å­˜åœ¨åœ¨ç³»ç»ŸæœåŠ¡é‡Œï¼Œè€Œä¸”æ˜¯è‡ªåŠ¨å¯åŠ¨ï¼Œå®‰è£…Agentå¹¶æ³¨å†ŒæœåŠ¡,è§å›¾1ã€‚
  
-
-6) ÅäÖÃÃüÁî
+6) é…ç½®å‘½ä»¤
  l C:\zabbix\bin\win32\zabbix_agentd -c C:\zabbix\conf\zabbix_agentd.win.conf -i
- -c £ºÖ¸¶¨ÅäÖÃÎÄ¼şËùÓĞÎ»ÖÃ
- -i £º°²×°¿Í»§¶Ë
- -s £ºÆô¶¯¿Í»§¶Ë
- -x £ºÍ£Ö¹¿Í»§¶Ë
- -d £ºĞ¶ÔØ¿Í»§¶Ë
+ -c ï¼šæŒ‡å®šé…ç½®æ–‡ä»¶æ‰€æœ‰ä½ç½®
+ -i ï¼šå®‰è£…å®¢æˆ·ç«¯
+ -s ï¼šå¯åŠ¨å®¢æˆ·ç«¯
+ -x ï¼šåœæ­¢å®¢æˆ·ç«¯
+ -d ï¼šå¸è½½å®¢æˆ·ç«¯
  
-7)È·ÈÏzabbix/conf/zabbix_agentd.win.confÎÄ¼ş¹ØÓÚÍø¿¨²ÎÊıÉè¶¨
- ÔÚ¿Í»§¶Ë»ñÈ¡Íø¿¨²ÎÊıÁĞ±í:
+7)ç¡®è®¤zabbix/conf/zabbix_agentd.win.confæ–‡ä»¶å…³äºç½‘å¡å‚æ•°è®¾å®š
+ åœ¨å®¢æˆ·ç«¯è·å–ç½‘å¡å‚æ•°åˆ—è¡¨:
  typeperf -qx | find "Network Interface" | find "Bytes"
- È·ÈÏÒÔÏÂÄÚÈİ£º
+ ç¡®è®¤ä»¥ä¸‹å†…å®¹ï¼š
  ### Option:Network
  PerfCounter=NetIn,"\NetworkInterface(Red Hat VirtIO Ethernet Adapter)\Bytes Received/sec",15
  PerfCounter=NetOut,"\Network Interface(Red Hat VirtIO Ethernet Adapter)\Bytes Sent/sec",15
  PerfCounter=NetTotal,"\Network Interface(Red Hat VirtIO Ethernet Adapter)\Bytes Total/sec",15
- ÆäÖĞ""²¿·ÖÈ¡×ÔÓÚÉÏÍ¼ÖĞµÄÍø¿¨²ÎÊı£¬NetIn£¬NetOutºÍNetTotalÊÇÔÚZabbixÖĞÅäÖÃÊ±µÄKey¡£
- ×îºóµÄ15ÊÇÖ¸È¡ÖµÊ±¼ä£¬µ¥Î»Îª¡°Ãë¡±
+ å…¶ä¸­""éƒ¨åˆ†å–è‡ªäºä¸Šå›¾ä¸­çš„ç½‘å¡å‚æ•°ï¼ŒNetInï¼ŒNetOutå’ŒNetTotalæ˜¯åœ¨Zabbixä¸­é…ç½®æ—¶çš„Keyã€‚
+ æœ€åçš„15æ˜¯æŒ‡å–å€¼æ—¶é—´ï¼Œå•ä½ä¸ºâ€œç§’â€
  
-8)ÔËĞĞ°²×°ºÍÆô¶¯ÃüÁî
- 64Î»
+8)è¿è¡Œå®‰è£…å’Œå¯åŠ¨å‘½ä»¤
+ 64ä½
  C:\zabbix\bin\win64\zabbix_agentd.exe -c C:\zabbix\conf\zabbix_agentd.win.conf -i
  C:\zabbix\bin\win64\zabbix_agentd.exe -c C:\zabbix\conf\zabbix_agentd.win.conf -s
- 32Î»
+ 32ä½
  C:\zabbix\bin\win32\zabbix_agentd.exe -c C:\zabbix\conf\zabbix_agentd.win.conf -i
  C:\zabbix\bin\win32\zabbix_agentd.exe -c C:\zabbix\conf\zabbix_agentd.win.conf -s
- °ïÖú
+ å¸®åŠ©
  C:\zabbix\bin\win32\zabbix_agentd.exe -c C:\zabbix\conf\zabbix_agentd.win.conf -h
  
-
-4.ÆäËûÎÊÌâ¼°½â¾ö
- 1) ·À»ğÇ½ÏŞÖÆ£¬ÅäÖÃ²»³É¹¦
- Èç¹û±¾»úÓĞ·À»ğÇ½µÄ»°£¬Çë¹Ø±Õ£¬·ñÔò¿ÉÄÜÅäÖÃ²»³É¹¦,»òÕß°ÑzabbixËùÓÃµ½µÄ¶Ë¿Ú´ò¿ª¡£¿ª·Å·À»ğÇ½¶Ë¿Ú10050
+4.å…¶ä»–é—®é¢˜åŠè§£å†³
+ 1) é˜²ç«å¢™é™åˆ¶ï¼Œé…ç½®ä¸æˆåŠŸ
+ å¦‚æœæœ¬æœºæœ‰é˜²ç«å¢™çš„è¯ï¼Œè¯·å…³é—­ï¼Œå¦åˆ™å¯èƒ½é…ç½®ä¸æˆåŠŸ,æˆ–è€…æŠŠzabbixæ‰€ç”¨åˆ°çš„ç«¯å£æ‰“å¼€ã€‚å¼€æ”¾é˜²ç«å¢™ç«¯å£10050
