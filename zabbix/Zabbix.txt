@@ -129,8 +129,6 @@ systemctl daemon-reload && systemctl restart php-fpm.service && systemctl restar
 #密码：zabbix
 
 
-
-
 ---------------------------------------备注------------------------------------
 创建数据库：
    server和proxy的运行都依赖于数据库，agent则不需要。
@@ -174,8 +172,6 @@ cd ../../
 
 而后编译安装zabbix即可：
 # make && make install
-
-
 
 配置zabbix：
 server的配置文件为zabbix_server.conf，至少应该为其配置数据库等相关的信息；
@@ -642,7 +638,7 @@ set smtp=smtp.qq.com
 
 set smtp-auth-user=489548322@qq.com
 
-set smtp-auth-password=apvlwaqlntlobjbh
+set smtp-auth-password=xxxxxxxxxx
 ' >> /etc/mail.rc 
 
 telnet smtp.qq.com 25
