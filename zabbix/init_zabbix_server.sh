@@ -49,6 +49,7 @@ source /etc/profile.d/zabbix.sh
 
 #5、启动zabbix
 #配置zabbix_server配置文件
+sed -i 's|# StartIPMIPollers=0|StartIPMIPollers=5|' /usr/local/zabbix/etc/zabbix_server.conf
 sed -i 's|# DBPassword=|DBPassword=zabbix_123456*0987|' /usr/local/zabbix/etc/zabbix_server.conf
 sed -i 's|# DBPort=3306|DBPort=3306|' /usr/local/zabbix/etc/zabbix_server.conf
 sed -i 's|# JavaGateway=|JavaGateway=127.0.0.1|' /usr/local/zabbix/etc/zabbix_server.conf
