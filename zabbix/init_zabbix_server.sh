@@ -4,7 +4,7 @@
 sourceinstall=/usr/local/src/lnmp/zabbix
 chmod -R 777 $sourceinstall
 ntpdate ntp1.aliyun.com
-yum -y install net-snmp* libevent* javac* libssh2-devel.x86_64 OpenIPMI-devel
+yum -y install net-snmp* libevent* javac* libssh2-devel.x86_64 OpenIPMI-devel OpenIPMI ipmitool freeipmi
 hostname zabbixserver && export HOSTNAME=zabbixserver
 echo "`ifconfig|grep 'inet'|head -1|awk '{print $2}'|cut -d: -f2` zabbixserver" >> /etc/hosts
 
