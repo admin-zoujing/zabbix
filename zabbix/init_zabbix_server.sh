@@ -4,7 +4,7 @@
 sourceinstall=/usr/local/src/lnmp/zabbix
 chmod -R 777 $sourceinstall
 ntpdate ntp1.aliyun.com
-yum -y install net-snmp* libevent* javac* libssh2-devel.x86_64
+yum -y install net-snmp* libevent* javac* libssh2-devel.x86_64 OpenIPMI-devel
 hostname zabbixserver && export HOSTNAME=zabbixserver
 echo "`ifconfig|grep 'inet'|head -1|awk '{print $2}'|cut -d: -f2` zabbixserver" >> /etc/hosts
 
@@ -37,7 +37,7 @@ mysql -uzabbix -pzabbix_123456*0987 zabbix < schema.sql
 mysql -uzabbix -pzabbix_123456*0987 zabbix < images.sql
 mysql -uzabbix -pzabbix_123456*0987 zabbix < data.sql
 cd /usr/local/zabbix/zabbix-3.4.15/ 
-./configure --prefix=/usr/local/zabbix/ --enable-server --enable-agent --with-mysql --enable-ipv6 --with-net-snmp --with-libcurl --with-ssh2 --with-libxml2 --enable-java
+./configure --prefix=/usr/local/zabbix/ --enable-server --enable-agent --with-mysql --enable-ipv6 --with-net-snmp --with-libcurl --with-ssh2 --with-libxml2 --enable-java --with-openipmi
 make && make install
 
 #4、zabbix命令加入bash
