@@ -629,16 +629,6 @@ Include=/usr/local/zabbix/etc/zabbix_agentd.conf.d/
 一、Centos安装mailx
 1、QQ邮箱设置，开启POP3、SMTP、IMAP服务。
 2、yum -y install  mailx   php
-echo '
-set from=489548322@qq.com
-
-set smtp=smtp.qq.com
-
-set smtp-auth-user=489548322@qq.com
-
-set smtp-auth-password=xxxxxxxxxx
-' >> /etc/mail.rc 
-
 telnet smtp.qq.com 25
 3、echo "test mail content"|mail -s "Mail title" 489548322@qq.com
 echo '#!/bin/bash
