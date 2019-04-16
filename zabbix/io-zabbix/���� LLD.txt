@@ -1,0 +1,27 @@
+① 正则配置
+
+因为扫描出的分区比较多，我们监控特定的分区IO，需要使用zabbix正则表达式过滤.
+Administration->General->右侧下来条选择“Regular expressions”->New regular expression（创建正则）
+Name: Linux disks for autodiscovery
+expression：^(xvda|xvdb|sda|sdb)$
+Expression type：return is True
+
+
+
+
+rrqm/s: <span style="white-space:pre">	</span>每秒进行 merge 的读操作数目。即 delta(rmerge)/s
+wrqm/s: <span style="white-space:pre">	</span>每秒进行 merge 的写操作数目。即 delta(wmerge)/s
+r/s:    <span style="white-space:pre">	</span>每秒完成的读 I/O 设备次数。即 delta(rio)/s
+w/s:    <span style="white-space:pre">	</span>每秒完成的写 I/O 设备次数。即 delta(wio)/s
+rsec/s: <span style="white-space:pre">	</span>每秒读扇区数。即 delta(rsect)/s
+wsec/s: <span style="white-space:pre">	</span>每秒写扇区数。即 delta(wsect)/s
+rkB/s:  <span style="white-space:pre">	</span>每秒读K字节数。是 rsect/s 的一半，因为每扇区大小为512字节。(需要计算)
+wkB/s:  <span style="white-space:pre">		</span>每秒写K字节数。是 wsect/s 的一半。(需要计算)
+avgrq-sz: <span style="white-space:pre">	</span>平均每次设备I/O操作的数据大小 (扇区)。delta(rsect+wsect)/delta(rio+wio)
+avgqu-sz: <span style="white-space:pre">	</span>平均I/O队列长度。即 delta(aveq)/s/1000 (因为aveq的单位为毫秒)。
+await: <span style="white-space:pre">		</span>平均每次设备I/O操作的等待时间 (毫秒)。即 delta(ruse+wuse)/delta(rio+wio)
+svctm: <span style="white-space:pre">		</span>平均每次设备I/O操作的服务时间 (毫秒)。即 delta(use)/delta(rio+wio)
+%util: <span style="white-space:pre">	</span>一秒中有百分之多少的时间用于 I/O 操作，或者说一秒中有多少时间 I/O 队列是非空的。即 delta(use)/s/1000 (因为use的单位为毫秒)
+ 
+如果 %util 接近 100%，说明产生的I/O请求太多，I/O系统已经满负荷，该磁盘可能存在瓶颈。
+idle小于70% IO压力就较大了,一般读取速度有较多的wait.
