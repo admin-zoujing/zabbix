@@ -1,6 +1,7 @@
 #! /bin/bash
 #Centos7 + zabbix_server安装脚本
 ##http://mirrors.aliyun.com/zabbix/zabbix/3.4/
+##wget https://sourceforge.net/projects/zabbix/files/zabbix-4.0.6.tar.gz
 sourceinstall=/usr/local/src/lnmp/zabbix
 chmod -R 777 $sourceinstall
 ntpdate ntp1.aliyun.com
@@ -21,7 +22,7 @@ echo 'extension = /usr/local/php/lib/php/extensions/no-debug-non-zts-20170718/ld
 #1、解压安装
 cd $sourceinstall
 mkdir -pv /usr/local/zabbix
-tar -zxvf zabbix-3.4.15.tar.gz -C /usr/local/zabbix/
+tar -zxvf zabbix-4.0.6.tar.gz -C /usr/local/zabbix/
 
 #2、创建用户
 useradd zabbix -s /sbin/nologin
@@ -32,17 +33,17 @@ mysql -uroot -pRoot_123456*0987 -e "CREATE DATABASE zabbix CHARACTER SET utf8 CO
 mysql -uroot -pRoot_123456*0987 -e "GRANT ALL ON zabbix.* TO zabbix@localhost IDENTIFIED BY 'zabbix_123456*0987';"
 mysql -uroot -pRoot_123456*0987 -e "flush privileges;"
 
-cd /usr/local/zabbix/zabbix-3.4.15/database/mysql/
+cd /usr/local/zabbix/zabbix-4.0.6/database/mysql/
 mysql -uzabbix -pzabbix_123456*0987 zabbix < schema.sql
 mysql -uzabbix -pzabbix_123456*0987 zabbix < images.sql
 mysql -uzabbix -pzabbix_123456*0987 zabbix < data.sql
-cd /usr/local/zabbix/zabbix-3.4.15/ 
+cd /usr/local/zabbix/zabbix-4.0.6/ 
 ./configure --prefix=/usr/local/zabbix/ --enable-server --enable-agent --with-mysql --enable-ipv6 --with-net-snmp --with-libcurl --with-ssh2 --with-libxml2 --enable-java --with-openipmi
 make && make install
 
 #4、zabbix命令加入bash
 cat >> /etc/profile.d/zabbix.sh <<EOF
-  PATH=/usr/local/zabbix/sbin/:\$PATH
+  PATH=/usr/local/zabbix/bin/:/usr/local/zabbix/sbin/:\$PATH
   export PATH
 EOF
 source /etc/profile.d/zabbix.sh
@@ -107,7 +108,7 @@ systemctl daemon-reload && systemctl enable zabbix-agent.service && systemctl st
 
 #6、复制前端文件
 mkdir -pv /usr/local/nginx/html/zabbix
-cp -rp /usr/local/zabbix/zabbix-3.4.15/frontends/php/* /usr/local/nginx/html/zabbix/
+cp -rp /usr/local/zabbix/zabbix-4.0.6/frontends/php/* /usr/local/nginx/html/zabbix/
 chmod -Rf 775 /usr/local/nginx/html/zabbix
 chown -Rf nginx:nginx /usr/local/nginx/html/zabbix
 
