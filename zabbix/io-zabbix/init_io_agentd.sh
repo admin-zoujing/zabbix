@@ -180,4 +180,6 @@ UserParameter=custom.vfs.dev.iostats.util[*],/etc/zabbix/externalscripts/zbx_par
 chmod -R 755 /etc/zabbix
 systemctl enable zabbix-agent
 systemctl restart zabbix-agent
-
+firewall-cmd --permanent --zone=public --add-port=10050/tcp --permanent;
+firewall-cmd --permanent --query-port=10050/tcp;
+firewall-cmd --reload;
