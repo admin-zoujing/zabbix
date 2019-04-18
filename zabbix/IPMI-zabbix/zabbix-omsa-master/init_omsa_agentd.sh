@@ -21,6 +21,9 @@ chmod -R 755 /etc/zabbix
 systemctl enable zabbix-agent
 systemctl restart zabbix-agent
 
+firewall-cmd --permanent --zone=public --add-port=10050/tcp --permanent;
+firewall-cmd --permanent --query-port=10050/tcp;
+firewall-cmd --reload;
 #zabbix_get -s agent端地址 -k "hardware_battery"  
 
 
