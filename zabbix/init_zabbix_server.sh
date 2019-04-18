@@ -132,4 +132,9 @@ chown -Rf nginx:nginx /usr/local/nginx/zabbix
 systemctl daemon-reload && systemctl restart php-fpm.service && systemctl restart nginx.service
 #用户名:Admin    注A大写
 #密码：zabbix
+firewall-cmd --permanent --zone=public --add-port=10050/tcp --permanent;
+firewall-cmd --permanent --query-port=10050/tcp;
+firewall-cmd --permanent --zone=public --add-port=10051/tcp --permanent;
+firewall-cmd --permanent --query-port=10051/tcp;
+firewall-cmd --reload;
 
