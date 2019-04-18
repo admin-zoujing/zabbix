@@ -5,7 +5,7 @@ cd /usr/local/src/lnmp/zabbix/io-zabbix
 yum -y install zabbix-agent-3.4.15-1.el7.x86_64.rpm
 #zabbix server的ip地址，多个ip使用逗号分隔
 sed -i 's|Server=127.0.0.1|Server=192.168.30.100| ' /etc/zabbix/zabbix_agentd.conf
-sed -i 's|ServerActive=127.0.0.1|ServerActive=192.168.30.100| ' /etc/zabbix/zabbix_agentd.conf
+sed -i 's|ServerActive=127.0.0.1|ServerActive=192.168.30.71| ' /etc/zabbix/zabbix_agentd.conf
 #zabbix agent的ip地址
 sed -i 's|Hostname=Zabbix server|Hostname=192.168.30.71| ' /etc/zabbix/zabbix_agentd.conf
 
