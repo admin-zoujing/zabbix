@@ -1,0 +1,176 @@
+tomcat用户管理配置
+在tomcat-users.xml中添加用户：
+
+  <role rolename="manager"/>
+  <role rolename="manager-gui"/>
+  <role rolename="admin"/>
+  <role rolename="admin-gui"/>
+  <user username="tomcat" password="tomcat" roles="admin-gui,admin,manager-gui,manager"/>
+点击server status 输入用户名密码可以查看服务器的状态
+
+1、服务器信息
+2、JVM的信息 （默认的这些值都很低，我们可以配置）
+
+PS Eden Space：JVM的年轻代。  一个对象new 出来后会在Eden Space，直到GC到来,GC会逐一问清楚每个对象是否存在引用，进入Survivor Space（幸存区），没有引用将被kill。
+
+PS Old Gen：JVM的老年代。
+
+PS Survivor Space：幸存区。幸存者区的对象可以活段时间，GC会定期（可以自定义）会对这些对象进行访问，如果该对象的引用不存在了将被kill，如果每次访问该对象都存在引用，将被转移到老年代。（用于保存在eden space内存池中经过垃圾回收后没有被回收的对象。）
+
+Code Cache：代码缓存区。HotSpot Java虚拟机包括一个用于编译和保存本地代码（native code）的内存。
+
+PS Perm Gen：永久代。
+
+
+
+一、tomcat中的三种运行模式之运行模式的优化
+       时间      CPU    内存   流量
+BIO    23.354    50%    200    240.45
+NIO    17.344    64%    150    325.16
+APR    13.755    52%    240    409.26
+
+1、BIO（阻塞式）：tomcat的默认模式，该模式性能较低，没有经过任何优化处理和支持，一个线程处理一个请求。缺点：并发量过大时，线程数较多，浪费资源。tomcat7及以下版本，在linux系统中默认使用该模式。
+
+2、NIO-Non-blocking IO（非阻塞IO）：Java NIO可以让你非阻塞的使用IO，例如：当线程从通道读取数据到缓冲区时，线程还是可以进行其他事情。当数据被写入到缓冲区时，线程可以继续处理它。从缓冲区写入通道也类似。Tomcat8在Linux系统中默认使用这种方式。
+
+3、APR：Apache Portable Runtime，从操作系统层面解决io阻塞问题。Tomcat7或Tomcat8在Win7或以上的系统中启动默认使用这种方式。Linux如果安装了apr和native，Tomcat直接启动就支持apr。
+(安装方法：http://www.cnblogs.com/nb-blog/p/5278502.html)
+
+ 查看tomcat的启动模式：日志文件 Starting ProtocolHandler ["http-bio-8080"]
+
+
+ 修改tomcat的运行模式：
+将<Connector port="8080" protocol="HTTP/1.1" connectionTimeout="20000"  redirectPort="8443" /> protocol="HTTP/1.1" 修改为NIO模式
+  <Connector port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol"
+               connectionTimeout="20000"
+               redirectPort="8443" />
+修改后：日志文件 Starting ProtocolHandler ["http-nio-8080"]
+
+
+
+二、tomcat执行器（线程池）的优化
+tomcat默认是没有启用线程池的，在tomcat中每一个用户请求都是一个线程，所以我们可以使用线程池来提高性能。tomcat的前段有一个调度线程，会将用户的请求放入线程池中，一定时间后线程池中的用户请求任务就变为工作线程。
+
+1、开启线程池：打开server.xml中关于线程池的配置
+
+<Executor name="tomcatThreadPool" namePrefix="catalina-exec-"
+        maxThreads="600" minSpareThreads="10"/>
+重要参数说明：
+
+name：共享线程池的名字。这是Connector为了共享线程池要引用的名字，该名字必须唯一。默认值：None；
+
+namePrefix:在JVM上，每个运行线程都可以有一个name 字符串。这一属性为线程池中每个线程的name字符串设置了一个前缀，Tomcat将把线程号追加到这一前缀的后面。默认值：tomcat-exec-；
+
+maxThreads：该线程池可以容纳的最大线程数。默认值：200；
+
+maxIdleTime：在tomcat关闭一个空闲线程之前，允许空闲线程持续的时间(以毫秒为单位)。只有当前活跃的线程数大于minSpareThread的值，才会关闭空闲线程。默认值：60000(一分钟)。
+
+minSpareThreads：Tomcat应该始终打开的最小不活跃线程数。默认值：25。
+
+2、引用线程池
+
+  <Connector executor="tomcatThreadPool"
+               port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol"
+               connectionTimeout="20000"
+               redirectPort="8443" 
+               />
+ PS：Connector 的一份最优配:一般情况下我们不使用Executor开启线程池，我们在Connector上直接配置
+
+ <Connector 
+               port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol"
+               maxThreads="1000" 
+               minSpareThreads="100"
+               acceptCount="1000"
+               maxConnections="1000"
+               connectionTimeout="20000"
+               maxHttpHeaderSize="8192"
+               tcpNoDelay="true"
+               compression="on"
+               disableUploadTimeout="true"  
+               redirectPort="8443" 
+               enableLookups="false"
+               URIEncoding="UTF-8"
+               />
+
+maxThreads:最大线程数
+minSpareThreads:最小线程数
+acceptCount:接受最大队列长度
+maxConnections:最大连接数
+connectionTimeout：超时等待时间 毫秒
+maxHttpHeaderSize:请求头最大值
+tcpNoDelay:如果为true，服务器socket会设置TCP_NO_DELAY选项，在大多数情况下可以提高性能。缺省情况下设为true
+compression：是否开启压缩GZIP on开启 off 关闭 forde：所有情况下都压缩
+compressionMinSize="2048" noCompressionUserAgents="gozilla, traviata" 
+compressableMimeType="text/html,text/xml,text/javascript,text/css,text/plain" 
+disableUploadTimeout：限定上传时间
+enableLookups：关闭DNS反向查询，DNS反查很耗时间
+
+三、tomcat优化之禁用AJP连接器实现动静分离
+AJP：协议是一个面向包的。web服务器和servlet容器通过TCP链接进行交互，为了节省SOCKET创建的昂贵代价，WEB服务器会尝试维护一个永久TCP链接到Servlet容器，并在多个请求和响应周期过程会重用链接。
+
+web客户1访问tomcat服务器的 资源index.jsp 是可以直接访问的，如果我们访问的是静态资源，tomcat是不方便处理的它会把这些静态资源返回给Apache服务器，由他们返回给用户，所以tomcat服务器相对于nginx服务器在处理静态资源上效率较低。因此我们的网站服务器一般是Nginx+tomcat，nginx负责处理静态资源，因此AJP 协议我们在使用nginx+tomcat架构时可以关闭它来进行效率的优化。
+
+注释tomcat中server.xml中<Connector port="8009" protocol="AJP/1.3" redirectPort="8443" /> 即可。
+
+ 
+
+四、tomcat中JVM参数优化
+对jvm参数的优化我们主要是对堆内存的优化，堆内存分为三大块年轻代、老年代、永久代。
+
+如何分配这三个区域的大小：
+
+如果我们的需求需要经常创建对象，且使用完毕后马上会被回收，这样的场景我们可以给年轻代分配较大空间。例如：对外提供一个查询接口，返回json数据，这个接口被频繁的调用，我们可以将这个服务的年轻代空间调大。
+
+静态变量较多时可以将老年代空间设置大一些。
+
+1、设置堆内存大小
+-Xms：JVM启动初始化内存
+
+-Xmx：JVM的最大堆内存，在JVM启动以后会分配-Xmx参数指定的内存空间作为堆内存，但是不一定会全部使用，JVM会根据-Xmx参数来调整真正用于JVM的内存。
+
+-Xmx 、-Xms之间的差值就是三个Virtual空间的大小。
+
+2、年轻代PS Eden Space：
+-XX:NewSize    设置年轻代大小
+-XX:MaxNewSize 设置年轻代最大内存大小
+-Xmn           表示设置年轻代的大小
+
+-xx:NewRatio=8 表示老年代与年轻代的比值是8:1
+
+-XX:SurvivorRatio=32 表示eden与survivor的比值是32:1
+
+
+3、永久代PS Perm Gen：
+-XX:PermSize=16m -XX:MaxPermSize=64M
+
+4、Thread Stack（线程区）
+-XX:Xss=128k 
+
+
+修改tomcat  bin目录下catalina.bat 或者catalina.sh文件，修改内容如下
+
+windows下 catalina.bat
+
+rem ---------------------------------------------------------------------------
+set JAVA_OPTS=-Dfile.encoding=UTF-8 -server -Xms1024m -Xmx2048m -XX:NewSize=512m -XX:MaxNewSize=1024m -XX:PermSize=256m -XX:MaxPermSize=512m -XX:MaxTenuringThreshold=10 -XX:NewRatio=2 -XX:+DisableExplicitGC
+setlocal
+
+
+Linux下catalina.sh
+
+# -----------------------------------------------------------------------------
+JAVA_OPTS="-Dfile.encoding=UTF-8 -server -Xms1024m -Xmx2048m -XX:NewSize=512m -XX:MaxNewSize=1024m -XX:PermSize=256m -XX:MaxPermSize=512m -XX:MaxTenuringThreshold=10 -XX:NewRatio=2 -XX:+DisableExplicitGC"
+# OS specific support.  $var _must_ be set to either true or false.
+参数说明：
+
+复制代码
+#-Dfile.encoding:默认文件编码
+#-Xms512m  设置JVM的最小内存为512m，此值可以设置与-Xmx相同以此避免每次垃圾回收完成后JVM重新分配内存。 
+#-Xmx1024  设置JVM的最大可用内存
+#-XX:NewSize    设置年轻代大小
+#-XX:MaxNewSize 设置年轻代最大内存大小
+#-XX:PermSize    设置永久代大小
+#-XX:MaxPermSize 设置永久代最大内存
+#-XX:NewRatio=2 设置年轻代与老年代的比值 2 ：表示年轻代与老年代的比值是1:2
+#-XX:MaxTenuringThreshold  这种垃圾的最大年龄，默认是15 。 0：表示年轻代不经过Survivor区直接进入老年代，对于老年代较多的应用，设置为0可以提高效率。如果该值较大表示年轻代的对象会在Survivor区进行多次复制，以此增加对象在年轻代的存活时间，增加在年轻代被回收的概率。
+#XX:+DisableExplicitGC 应用程序将忽略收到调用GC的代码。及System.GC()是一个空调用。
