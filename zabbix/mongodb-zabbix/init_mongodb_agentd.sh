@@ -22,13 +22,13 @@ mkdir -pv /etc/zabbix/externalscripts
 echo '#!/bin/bash
 case $# in
   1)
-    output=$(/bin/echo "db.serverStatus().$1" |/usr/local/mongodb/bin/mongo 127.0.0.1:27017/admin |sed -n "5p")
+    output=$(/bin/echo "db.serverStatus().$1" |/usr/local/mongodb/mongodb-linux-x86_64-rhel70-3.6.9/bin/mongo 127.0.0.1:27017/admin |sed -n "5p")
     ;;
   2)
-    output=$(/bin/echo "db.serverStatus().$1.$2" |/usr/local/mongodb/bin/mongo 127.0.0.1:27017/admin |sed -n "5p")
+    output=$(/bin/echo "db.serverStatus().$1.$2" |/usr/local/mongodb/mongodb-linux-x86_64-rhel70-3.6.9/bin/mongo 127.0.0.1:27017/admin |sed -n "5p")
     ;;
   3)
-    output=$(/bin/echo "db.serverStatus().$1.$2.$3" |/usr/local/mongodb/bin/mongo 127.0.0.1:27017/admin |sed -n "5p")
+    output=$(/bin/echo "db.serverStatus().$1.$2.$3" |/usr/local/mongodb/mongodb-linux-x86_64-rhel70-3.6.9/bin/mongo 127.0.0.1:27017/admin |sed -n "5p")
     ;;
 esac
   
