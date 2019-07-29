@@ -52,7 +52,7 @@ firewall-cmd --reload;
 
 #BIOS 界面设置 IPMI,重启F2进去System Setup界面,选择iDRAC Settings:进入后,先配置Network:先后在这个页面中配置了：启动iDrac网卡,设置idrac的ip,启用ipmi
 
-#1、yum install -y OpenIPMI ipmitool 
+#1、 yum -y install OpenIPMI OpenIPMI-devel ipmitool freeipmi
 # systemctl enable ipmi  && systemctl start ipmi    
 #2 使用ipmitool 也可以设置ipmi 的 ip（如果是裸机，就只能在BIOS 界面设置了）
 # ipmitool lan set 1 ipsrc static 
@@ -78,5 +78,7 @@ firewall-cmd --reload;
 #ipmitool user priv 2 4 1     设置权限，语法:   priv     <user id> <privilege level> [<channel number>]
 #ipmitool lan set 1 access on 设置channel 1允许访问
 
-#服务端配置
-sed -i '/# StartIPMIPollers=0/aStartIPMIPollers=5'  /usr/local/zabbix/etc/zabbix_server.conf
+#服务端配置 
+#yum -y install OpenIPMI OpenIPMI-devel ipmitool freeipmi
+#sed -i '/# StartIPMIPollers=0/aStartIPMIPollers=5'  /usr/local/zabbix/etc/zabbix_server.conf
+#systemctl restart zabbix-server.service
