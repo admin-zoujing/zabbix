@@ -78,3 +78,5 @@ firewall-cmd --reload;
 #ipmitool user priv 2 4 1     设置权限，语法:   priv     <user id> <privilege level> [<channel number>]
 #ipmitool lan set 1 access on 设置channel 1允许访问
 
+#服务端配置
+sed -i '/# StartIPMIPollers=0/aStartIPMIPollers=5'  /usr/local/zabbix/etc/zabbix_server.conf
