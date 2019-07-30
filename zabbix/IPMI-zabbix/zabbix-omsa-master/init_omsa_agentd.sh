@@ -61,22 +61,23 @@ firewall-cmd --reload;
 # ipmitool lan set  1 defgw ipaddr 10.11.1.1   
 #3、查看ipmitool lan print 1
 #4、重启 ipmi 服务: systemctl restart ipmi
-#5、测试 ipmi
-#     ipmitool -I lanplus -H x.x.x.x  -U  root -P  password chassis power status
-#     DELL 默认的 ipmi 用户名密码是 root/calvin, 可以在BIOS user configuration 中修改，也可以通过 ipmitool 修改
-#    lanplus 可以替换为 lan 测试
+#5、ipmitool 常用命令
+#ipmitool user list 1         通道1用户列表 语法： list    [<channel number>]
+#ipmitool user priv 2 4 1     设置权限，语法:   priv     <user id> <privilege level> [<channel number>]
+#ipmitool lan set 1 access on 设置channel 1允许访问
+#6、测试 ipmi
 #    ipmitool user list 1            # 1 是channel ID
 #    ipmitool user set name 2 root   # 2 是用户的id
 #    ipmitool user set password 2 $newPassword
 #    ipmitool user enable 2
 #    ipmitool channel setaccess 1 2 callin=on ipmi=on link=on privilege=2
-#6 ipmitool lan print 1 
-#7、可以通过web 界面访问 DRAC 页面   https://$ipmi_IP
-#8.DELL 提供 win 界面的 ipmish.exe 和 ipmitool.exe (可以在官网下载)
-#9、ipmitool 常用命令
-#ipmitool user list 1         通道1用户列表 语法： list    [<channel number>]
-#ipmitool user priv 2 4 1     设置权限，语法:   priv     <user id> <privilege level> [<channel number>]
-#ipmitool lan set 1 access on 设置channel 1允许访问
+
+#     ipmitool -I lanplus -H x.x.x.x  -U  root -P  password chassis power status
+#     DELL 默认的 ipmi 用户名密码是 root/calvin, 可以在BIOS user configuration 中修改，也可以通过 ipmitool 修改
+#    lanplus 可以替换为 lan 测试
+#7 ipmitool lan print 1 
+#8、可以通过web 界面访问 DRAC 页面   https://$ipmi_IP
+#9.DELL 提供 win 界面的 ipmish.exe 和 ipmitool.exe (可以在官网下载)
 
 #服务端配置 
 #yum -y install OpenIPMI OpenIPMI-devel ipmitool freeipmi
