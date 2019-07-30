@@ -65,7 +65,7 @@ firewall-cmd --reload;
 #     ipmitool -I lanplus -H x.x.x.x  -U  root -P  password chassis power status
 #     DELL 默认的 ipmi 用户名密码是 root/calvin, 可以在BIOS user configuration 中修改，也可以通过 ipmitool 修改
 #    lanplus 可以替换为 lan 测试
-#    ipmitool user list 1           # 1 是channel ID
+#    ipmitool user list 1            # 1 是channel ID
 #    ipmitool user set name 2 root   # 2 是用户的id
 #    ipmitool user set password 2 $newPassword
 #    ipmitool user enable 2
